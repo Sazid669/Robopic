@@ -1,0 +1,17 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+Aruco_Pick_and_Place [fillcolor=orange, fontcolor=black, fontsize=9, label="Ⓜ Aruco_Pick_and_Place", shape=box, style=filled];
+Move_Robot_To_Pick_Object [fillcolor=gray, fontcolor=black, fontsize=9, label=Move_Robot_To_Pick_Object, shape=ellipse, style=filled];
+Aruco_Pick_and_Place -> Move_Robot_To_Pick_Object;
+Pick_Object [fillcolor=gray, fontcolor=black, fontsize=9, label=Pick_Object, shape=ellipse, style=filled];
+Aruco_Pick_and_Place -> Pick_Object;
+Move_Robot_To_Place_Object [fillcolor=gray, fontcolor=black, fontsize=9, label=Move_Robot_To_Place_Object, shape=ellipse, style=filled];
+Aruco_Pick_and_Place -> Move_Robot_To_Place_Object;
+Place_Object [fillcolor=gray, fontcolor=black, fontsize=9, label=Place_Object, shape=ellipse, style=filled];
+Aruco_Pick_and_Place -> Place_Object;
+Move_To_Home_Position [fillcolor=gray, fontcolor=black, fontsize=9, label=Move_To_Home_Position, shape=ellipse, style=filled];
+Aruco_Pick_and_Place -> Move_To_Home_Position;
+}
