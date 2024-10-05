@@ -1,0 +1,42 @@
+<launch>
+    <!-- Configurable arguments -->
+    <arg name="robot_name" default="swiftpro"/>
+    <arg name="simulation_data" default="$(find turtlebot_simulation)/resources"/>
+    <arg name="scenario_description" default="$(find turtlebot_simulation)/scenarios/swiftpro_basic.scn"/>
+    <arg name="simulation_rate" default="1000.0"/>
+    <arg name="graphics_resolution" default="1200 800"/>
+    <arg name="graphics_quality" default="high"/>
+
+    <!-- Namespace with robot name -->
+    <group ns="$(arg robot_name)">
+        <!-- Run Simulator -->
+        <node name="stonefish_simulator" pkg="stonefish_ros" type="parsed_simulator" 
+            args="$(arg simulation_data) $(arg scenario_description) $(arg simulation_rate) $(arg graphics_resolution) $(arg graphics_quality)" output="screen">
+            <param name="robot_name" value="$(arg robot_name)"/>
+            <remap from="/$(arg robot_name)/stonefish_simulator/joint_states" to="/$(arg robot_name)/joint_states"/>
+        </node>
+
+        <!-- Load ROS Control for active joints -->
+        <rosparam command="load" file="$(find turtlebot_simulation)/config/swiftpro_velocity.yaml" />
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" 
+                args="joint_state_controller joint_velocity_controller" />
+
+        <!-- Load ROS Control for passive joints-->
+        <group ns="stonefish_simulator">
+            <rosparam command="load" file="$(find turtlebot_simulation)/config/swiftpro_position.yaml" />
+            <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" 
+                    args="joint_state_controller passive_joint_position_controller" />
+            <node name="swiftpro_controller" pkg="turtlebot_simulation" type="swiftpro_controller.py">
+                <remap from="joint_states" to="/$(arg robot_name)/joint_states"/>
+                <remap from="command" to="/$(arg robot_name)/stonefish_simulator/passive_joint_position_controller/command"/>
+            </node>
+        </group>
+        
+        <!-- Load robot description -->
+        <param name="robot_description" command="$(find xacro)/xacro '$(find swiftpro_description)/urdf/swiftpro_standalone.urdf.xacro'" />
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+        
+        <!-- Run RVIZ -->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find swiftpro_description)/rviz/swiftpro.rviz"/>
+    </group>
+</launch>

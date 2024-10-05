@@ -1,0 +1,12 @@
+<launch>
+
+    <include file="$(find turtlebot_simulation)/launch/turtlebot_hoi.launch" />  
+ 
+    <node name="x1" pkg="hands_on_intervention" type="deadReckonening.py" output="screen"/>  
+    <node name="x2" pkg="hands_on_intervention" type="main_services.py" output="screen"/> 
+    <node name="x3" pkg="hands_on_intervention" type="main.py" output="screen"/> 
+    <node name="x4" pkg="hands_on_intervention" type="aruco_position.py" output="screen"/>
+    <node name="x5" pkg="hands_on_intervention" type="behavior_tree_robot.py" output="screen"/>
+
+</launch>    
+
