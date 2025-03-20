@@ -16,4 +16,4 @@ roslaunch hands_on_intervention Intervention_final.launch
 
 This will run all the necessary file to run the package. 
 
-Thank you. 
+Thank you !
